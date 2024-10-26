@@ -30,7 +30,7 @@ export default function MainPage({ data }: { data: Record<any, any> }) {
         ? Object.keys(data[selectedRegion]?.[selectedProvince]?.[selectedCityMunicipality])
         : [];
 
-    let url = new URL('https://ph-emergency-hotlines-api.onrender.com/');
+    const url = new URL('https://ph-emergency-hotlines-api.onrender.com/');
 
     if (selectedRegion) {
         url.pathname += `api/${selectedRegion}/`
@@ -71,10 +71,14 @@ export default function MainPage({ data }: { data: Record<any, any> }) {
         }
     }
 
+    // National should only have these fields:
+    // national
+    // hotline
+
     return (
-        <Fragment>
+        <main className="pb-10">
             <header className="w-full text-center flex flex-col gap-2 pt-12">
-                <h1 className={`text-3xl md:text-7xl font-extrabold ${raleway.className}`}>
+                <h1 className={`text-4xl md:text-7xl font-extrabold ${raleway.className}`}>
                     Philippines<br />Emergency Hotlines API
                 </h1>
             </header>
@@ -93,7 +97,7 @@ export default function MainPage({ data }: { data: Record<any, any> }) {
                             <span className="pl-1 text-sm text-gray-400">API</span>
                         </a>
                         <a 
-                            href="https://github.com/waffensultan/ph-emergency-hotlines-api"
+                            href="https://github.com/waffensultan/ph-emergency-hotlines-frontend"
                             target="_blank"
                             className="self-start px-5 transition duration-150 shadow hover:shadow-md hover:border-white md:text-lg border border-gray-700  bg-gray-900 text-white rounded-md px-4 flex flex-row items-center gap-2"
                         >
@@ -130,45 +134,49 @@ export default function MainPage({ data }: { data: Record<any, any> }) {
                             ))}
                         </select>
                     </div>
-                    <div className="flex flex-col justify-start gap-2">
-                        <label 
-                            htmlFor="province"
-                            className="font-semibold tracking-tight"
-                        >Province</label>
-                        <select 
-                            id="province" 
-                            className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
-                            onChange={(event) => setSelectedProvince(event.target.value || undefined)}
-                        >
-                            <option value={""}>Choose a province</option>
-                            {provinces.map((province) => (
-                                <option 
-                                    key={province} 
-                                    value={province}
-                                >{province}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="flex flex-col justify-start gap-2">
-                        <label 
-                            htmlFor="city_municipality"
-                            className="font-semibold tracking-tight"
-                        >City / Municipality</label>
-                        <select 
-                            id="city_municipality" 
-                            className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
-                            value={selectedCityMunicipality || "Choose a city or municipality"}
-                            onChange={(event) => setSelectedCityMunicipality(event.target.value || undefined)}
-                        >
-                            <option value={""}>Choose a city or municipality</option>
-                            {cities_municipalities.map((city_municipality) => (
-                                <option 
-                                    key={city_municipality} 
-                                    value={city_municipality}
-                                >{city_municipality}</option>
-                            ))}
-                        </select>
-                    </div>
+                    {selectedRegion !== "national" && (
+                        <Fragment>
+                            <div className="flex flex-col justify-start gap-2">
+                                <label 
+                                    htmlFor="province"
+                                    className="font-semibold tracking-tight"
+                                >Province</label>
+                                <select 
+                                    id="province" 
+                                    className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
+                                    onChange={(event) => setSelectedProvince(event.target.value || undefined)}
+                                >
+                                    <option value={""}>Choose a province</option>
+                                    {provinces.map((province) => (
+                                        <option 
+                                            key={province} 
+                                            value={province}
+                                        >{province}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col justify-start gap-2">
+                                <label 
+                                    htmlFor="city_municipality"
+                                    className="font-semibold tracking-tight"
+                                >City / Municipality</label>
+                                <select 
+                                    id="city_municipality" 
+                                    className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
+                                    value={selectedCityMunicipality || "Choose a city or municipality"}
+                                    onChange={(event) => setSelectedCityMunicipality(event.target.value || undefined)}
+                                >
+                                    <option value={""}>Choose a city or municipality</option>
+                                    {cities_municipalities.map((city_municipality) => (
+                                        <option 
+                                            key={city_municipality} 
+                                            value={city_municipality}
+                                        >{city_municipality}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </Fragment>
+                    )}
                     <div className="flex flex-col justify-start gap-2">
                         <label 
                             htmlFor="hotline"
@@ -211,7 +219,7 @@ export default function MainPage({ data }: { data: Record<any, any> }) {
                 <div
                     className="h-[35rem] max-h-full flex flex-col gap-5 overflow-x-auto overflow-y-auto bg-gray-900 border border-gray-800 text-foreground p-4 rounded-xl text-background max-md:text-xs md:w-2/3"
                 >
-                    <div className="w-full rounded-full bg-gray-800 border border-gray-700 flex flex-row items-center justify-between gap-3">
+                    <div className="text-white w-full rounded-full bg-gray-800 border border-gray-700 flex flex-row items-center justify-between gap-3">
                         <span className="py-1 px-4 border-r border-gray-700 text-green-500 font-semibold">GET</span>
                         <input 
                             disabled 
@@ -226,11 +234,12 @@ export default function MainPage({ data }: { data: Record<any, any> }) {
                             <span>Copy</span>
                         </button>
                     </div>
-                    <div className="w-full flex overflow-x-auto">
+                    <div className="w-full flex overflow-x-auto text-white">
+                        <span className="text-gray-600 tracking-wider">{!responseData && "Your results will appear here..."}</span>
                         <pre>{responseData && JSON.stringify(responseData, null, 2)}</pre>
                     </div>
                 </div>
             </section>
-        </Fragment>
+        </main>
     )
 }
