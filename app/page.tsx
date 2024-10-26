@@ -2,7 +2,7 @@
 
 import { Raleway } from "next/font/google";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { FaGithub as GithubIcon } from "react-icons/fa";
 import { FaRegCopy as CopyIcon } from "react-icons/fa6";
@@ -10,35 +10,20 @@ import { FaRegCopy as CopyIcon } from "react-icons/fa6";
 /* FONTS */
 const raleway = Raleway({ subsets: ['latin'] });
 
-// interface Data {
-//     status: string;
-//     data: Record<string, Record<string, Array<Record<string, string | Array<Record<string, string>>>>>>
-// }
+export default function MainPage() {
+    const [data, setData] = useState<undefined | Record<any, any>>(undefined);
 
-// type Data = {
-//     status: string;
-//     data: Region
-// }
-// type Region = {
-//     [key: string]: Province
-// }
-// type Province = {
-//     [key: string]: CityMunicipality
-// }
-// type CityMunicipality = {
-//     [key: string]: Hotlines
-// }
-// type HotlineTypes = "general" | "police" | "medical" | "rescue_disaster" | "earthquake_seismic" | "traffic" | "social" | "digital"
-// type Hotlines = {
-//     [T in HotlineTypes]: Array<HotlineValues>
-// }
-// type HotlineValues = {
-//     "abbreviation"?: string;
-//     "name": string;
-//     "hotlines": Array<Record<string, string>>,
-// } 
+    // I know. You shouldn't be fetching data in Client Components.
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch('https://ph-emergency-hotlines-api.onrender.com/api/');
+            const data = await response.json();
 
-export default function MainPage({ data }: { data: Record<any, any> }) {
+            setData(data.data);
+        }
+        fetchData();
+    }, [])
+
     const [selectedRegion, setSelectedRegion] = useState<undefined | string>(undefined);
     const [selectedProvince, setSelectedProvince] = useState<undefined | string>(undefined);
     const [selectedCityMunicipality, setSelectedCityMunicipality] = useState<undefined | string>(undefined);
@@ -47,15 +32,15 @@ export default function MainPage({ data }: { data: Record<any, any> }) {
     const [responseData, setResponseData] = useState<undefined | any>(undefined);
     const [loading, setLoading] = useState(false);
 
-    const regions = Object.keys(data);
+    const regions = Object.keys(data ?? []);
     const provinces = (selectedRegion)
-        ? Object.keys(data[selectedRegion])
+        ? Object.keys(data?.[selectedRegion])
         : [];
     const cities_municipalities = selectedRegion && selectedProvince
-        ? Object.keys(data[selectedRegion]?.[selectedProvince])
+        ? Object.keys(data?.[selectedRegion]?.[selectedProvince])
         : [];
     const available_hotlines = selectedRegion && selectedProvince && selectedCityMunicipality
-        ? Object.keys(data[selectedRegion]?.[selectedProvince]?.[selectedCityMunicipality])
+        ? Object.keys(data?.[selectedRegion]?.[selectedProvince]?.[selectedCityMunicipality])
         : [];
 
     const url = new URL('https://ph-emergency-hotlines-api.onrender.com/');
