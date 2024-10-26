@@ -7,6 +7,7 @@
   --foreground: #171717;
 }
 
+/* Temporarily disable this so we can develop initially in light mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
