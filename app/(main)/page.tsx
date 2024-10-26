@@ -10,6 +10,34 @@ import { FaRegCopy as CopyIcon } from "react-icons/fa6";
 /* FONTS */
 const raleway = Raleway({ subsets: ['latin'] });
 
+// interface Data {
+//     status: string;
+//     data: Record<string, Record<string, Array<Record<string, string | Array<Record<string, string>>>>>>
+// }
+
+// type Data = {
+//     status: string;
+//     data: Region
+// }
+// type Region = {
+//     [key: string]: Province
+// }
+// type Province = {
+//     [key: string]: CityMunicipality
+// }
+// type CityMunicipality = {
+//     [key: string]: Hotlines
+// }
+// type HotlineTypes = "general" | "police" | "medical" | "rescue_disaster" | "earthquake_seismic" | "traffic" | "social" | "digital"
+// type Hotlines = {
+//     [T in HotlineTypes]: Array<HotlineValues>
+// }
+// type HotlineValues = {
+//     "abbreviation"?: string;
+//     "name": string;
+//     "hotlines": Array<Record<string, string>>,
+// } 
+
 export default function MainPage({ data }: { data: Record<any, any> }) {
     const [selectedRegion, setSelectedRegion] = useState<undefined | string>(undefined);
     const [selectedProvince, setSelectedProvince] = useState<undefined | string>(undefined);
