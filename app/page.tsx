@@ -13,7 +13,7 @@ const raleway = Raleway({ subsets: ['latin'] });
 export default function MainPage() {
     const [data, setData] = useState<undefined | Record<any, any>>(undefined);
 
-    // I know. You shouldn't be fetching data in Client Components.
+    // Don't worry, I know. You shouldn't be fetching data in Client Components.
     useEffect(() => {
         async function fetchData() {
             const response = await fetch('https://ph-emergency-hotlines-api.onrender.com/api/');
@@ -84,10 +84,6 @@ export default function MainPage() {
         }
     }
 
-    // National should only have these fields:
-    // national
-    // hotline
-
     return (
         <main className="pb-10">
             <header className="w-full text-center flex flex-col gap-2 pt-12">
@@ -118,6 +114,14 @@ export default function MainPage() {
                             <span className="border-r-2 border-gray-700 pr-2">Github</span>
                             <span className="pl-1 text-sm text-gray-400">Frontend</span>
                         </a>
+                        <h1 className="font-bold text-3xl pt-3">Status</h1>
+                        <div className={`${data ? "text-green-600" : "text-yellow-600"} flex flex-row items-center gap-1 rounded-md bg-gray-900 border border-gray-700 font-semibold tracking-tight py-1 px-3 flex-grow self-start`}>
+                            <div className={`w-2 h-2 rounded-full ${data ? "bg-green-400" : "bg-yellow-500"}`}></div>
+                            <span>{data ? "Online" : "Inactive"}</span>
+                        </div>
+                        {!data && (
+                            <p className="text-sm">Render spins down free-tier APIs for inactivity which may delay initial data retrieval by a minute or more.</p>
+                        )}
                     </div>
                     <div className="h-0.5 w-full bg-gray-700 rounded-full"></div>
                     <div className="flex flex-col justify-start gap-2">
@@ -127,7 +131,8 @@ export default function MainPage() {
                         >Region</label>
                         <select 
                             id="region" 
-                            className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
+                            disabled={!data}
+                            className={`${!data && "cursor-not-allowed"} px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
                             value={selectedRegion || "Choose a region"}
                             onChange={(event) => {
                                 if ((selectedRegion !== undefined && event.target.value !== selectedRegion) || (!event.target.value)) {
@@ -156,7 +161,8 @@ export default function MainPage() {
                                 >Province</label>
                                 <select 
                                     id="province" 
-                                    className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
+                                    disabled={!data}
+                                    className={`${!data && "cursor-not-allowed"} px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
                                     onChange={(event) => setSelectedProvince(event.target.value || undefined)}
                                 >
                                     <option value={""}>Choose a province</option>
@@ -175,7 +181,8 @@ export default function MainPage() {
                                 >City / Municipality</label>
                                 <select 
                                     id="city_municipality" 
-                                    className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
+                                    disabled={!data}
+                                    className={`${!data && "cursor-not-allowed"} px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
                                     value={selectedCityMunicipality || "Choose a city or municipality"}
                                     onChange={(event) => setSelectedCityMunicipality(event.target.value || undefined)}
                                 >
@@ -197,7 +204,8 @@ export default function MainPage() {
                         >Hotline <span className="text-blue-400">(Optional)</span></label>
                         <select 
                             id="hotline" 
-                            className="px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
+                            disabled={!data}
+                            className={`${!data && "cursor-not-allowed"} px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
                             value={selectedHotline || "Choose a hotline"}
                             onChange={(event) => setSelectedHotline(event.target.value || undefined)}
                         >
@@ -222,15 +230,15 @@ export default function MainPage() {
                             className="rounded-xl py-2 px-7 tracking-wide text-foreground transition duration-300 border border-background hover:border-white"
                         >Clear Fields</button>
                         <button 
-                            disabled={loading}
+                            disabled={loading || !data}
                             onClick={() => handleSubmit()}
-                            className="py-2 px-7 text-foreground bg-green-500 rounded-xl tracking-wide font-semibold transition duration-150 hover:bg-green-600 hover:text-white/60"
+                            className={`${!data ? "cursor-not-allowed bg-green-600 text-white text-white/60" : "hover:bg-green-600 hover:text-white/60"} py-2 px-7 text-foreground bg-green-500 rounded-xl tracking-wide font-semibold transition duration-150`}
                         >GET</button>
                     </div>
                 </div>
 
                 <div
-                    className="h-[35rem] max-h-full flex flex-col gap-5 overflow-x-auto overflow-y-auto bg-gray-900 border border-gray-800 text-foreground p-4 rounded-xl text-background max-md:text-xs md:w-2/3"
+                    className="h-[35rem] md:h-auto max-h-screen flex flex-col gap-5 overflow-x-auto overflow-y-auto bg-gray-900 border border-gray-800 text-foreground p-4 rounded-xl text-background max-md:text-xs md:w-2/3"
                 >
                     <div className="text-white w-full rounded-full bg-gray-800 border border-gray-700 flex flex-row items-center justify-between gap-3">
                         <span className="py-1 px-4 border-r border-gray-700 text-green-500 font-semibold">GET</span>
