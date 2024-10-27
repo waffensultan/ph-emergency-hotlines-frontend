@@ -191,8 +191,11 @@ export default function MainPage() {
                                     className={`${!data && "cursor-not-allowed"} px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
                                     value={selectedCityMunicipality || "Choose a city or municipality"}
                                         onChange={(event) => {
-                                            if (!event.target.value) {
-                                                setSelectedCityMunicipality(undefined)
+                                            if (event.target.value) {
+                                                setSelectedCityMunicipality(event.target.value)
+                                                if (event.target.value !== selectedCityMunicipality) {
+                                                    setSelectedHotline(undefined);
+                                                }
                                             } else {
                                                 setSelectedCityMunicipality(event.target.value)
                                             }
