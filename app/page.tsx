@@ -163,7 +163,13 @@ export default function MainPage() {
                                     id="province" 
                                     disabled={!data}
                                     className={`${!data && "cursor-not-allowed"} px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
-                                    onChange={(event) => setSelectedProvince(event.target.value || undefined)}
+                                    onChange={(event) => {
+                                        if (!event.target.value) {
+                                            setSelectedProvince(undefined);
+                                        } else {
+                                            setSelectedProvince(event.target.value);
+                                        }
+                                    }}
                                 >
                                     <option value={""}>Choose a province</option>
                                     {provinces.map((province) => (
@@ -184,7 +190,13 @@ export default function MainPage() {
                                     disabled={!data}
                                     className={`${!data && "cursor-not-allowed"} px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
                                     value={selectedCityMunicipality || "Choose a city or municipality"}
-                                    onChange={(event) => setSelectedCityMunicipality(event.target.value || undefined)}
+                                        onChange={(event) => {
+                                            if (!event.target.value) {
+                                                setSelectedCityMunicipality(undefined)
+                                            } else {
+                                                setSelectedCityMunicipality(event.target.value)
+                                            }
+                                    }}
                                 >
                                     <option value={""}>Choose a city or municipality</option>
                                     {cities_municipalities.map((city_municipality) => (
