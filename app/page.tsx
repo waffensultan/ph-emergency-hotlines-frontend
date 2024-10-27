@@ -19,7 +19,7 @@ export default function MainPage() {
             const response = await fetch('https://ph-emergency-hotlines-api.onrender.com/api/');
             const data = await response.json();
 
-            setData(data.data);
+            setData(data.data[0]);
         }
         fetchData();
     }, [])
