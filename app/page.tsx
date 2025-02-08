@@ -353,7 +353,7 @@ export default function MainPage() {
                     <div className="w-full flex flex-row justify-start max-md:pt-10 md:justify-end items-center gap-3">
                         <button
                             onClick={() => {
-                                setSelectedLocationData((prev) => ({
+                                setSelectedLocationData(() => ({
                                     region: undefined,
                                     province: undefined,
                                     cityMunicipality: undefined,
