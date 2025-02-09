@@ -33,8 +33,6 @@ export default function MainPage({
     const url = buildEmergencyHotlineURL({ ...selectedLocationData });
     const data = initialData;
 
-    // console.log(data);
-
     const regions = Object.keys(data ?? []);
     const provinces = selectedLocationData.region
         ? Object.keys(data?.[selectedLocationData.region])
@@ -82,10 +80,6 @@ export default function MainPage({
             setLoading(false);
         }
     };
-
-    // if (initialData.error) {
-    //     return <p>{initialData.error}</p>;
-    // }
 
     return (
         <main className="pb-10">
@@ -144,13 +138,12 @@ export default function MainPage({
                                         : "bg-yellow-500"
                                 }`}
                             ></div>
-                            <span>{!data.error ? "Online" : "Inactive"}</span>
+                            <span>{!data.error ? "Online" : "Suspended"}</span>
                         </div>
                         {data.error && (
                             <p className="text-sm">
-                                Render spins down free-tier APIs for inactivity
-                                which may delay initial data retrieval by a
-                                minute or more.
+                                The API may have been suspended either by myself
+                                or Render. Please contact me if needed.
                             </p>
                         )}
                     </div>
@@ -164,7 +157,7 @@ export default function MainPage({
                         </label>
                         <select
                             id="region"
-                            disabled={!data}
+                            disabled={data.error}
                             className={`${
                                 !data && "cursor-not-allowed"
                             } px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
@@ -212,7 +205,7 @@ export default function MainPage({
                                 </label>
                                 <select
                                     id="province"
-                                    disabled={!data}
+                                    disabled={data.error}
                                     className={`${
                                         !data && "cursor-not-allowed"
                                     } px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
@@ -249,7 +242,7 @@ export default function MainPage({
                                 </label>
                                 <select
                                     id="city_municipality"
-                                    disabled={!data}
+                                    disabled={data.error}
                                     className={`${
                                         !data && "cursor-not-allowed"
                                     } px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
@@ -311,7 +304,7 @@ export default function MainPage({
                         </label>
                         <select
                             id="hotline"
-                            disabled={!data}
+                            disabled={data.error}
                             className={`${
                                 !data && "cursor-not-allowed"
                             } px-3 py-2 rounded-md border border-gray-700 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500`}
@@ -350,10 +343,10 @@ export default function MainPage({
                             Clear Fields
                         </button>
                         <button
-                            disabled={loading || !data}
+                            disabled={loading || data.error}
                             onClick={() => handleSubmit()}
                             className={`${
-                                !data
+                                data.error
                                     ? "cursor-not-allowed bg-green-600 text-white text-white/60"
                                     : "hover:bg-green-600 hover:text-white/60"
                             } ${
