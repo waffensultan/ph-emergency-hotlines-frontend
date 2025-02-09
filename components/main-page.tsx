@@ -33,6 +33,8 @@ export default function MainPage({
     const url = buildEmergencyHotlineURL({ ...selectedLocationData });
     const data = initialData;
 
+    // console.log(data);
+
     const regions = Object.keys(data ?? []);
     const provinces = selectedLocationData.region
         ? Object.keys(data?.[selectedLocationData.region])
@@ -81,9 +83,9 @@ export default function MainPage({
         }
     };
 
-    if (initialData.error) {
-        return <p>{initialData.error}</p>;
-    }
+    // if (initialData.error) {
+    //     return <p>{initialData.error}</p>;
+    // }
 
     return (
         <main className="pb-10">
@@ -130,17 +132,21 @@ export default function MainPage({
                         <h1 className="font-bold text-3xl pt-3">Status</h1>
                         <div
                             className={`${
-                                data ? "text-green-600" : "text-yellow-600"
+                                !data.error
+                                    ? "text-green-600"
+                                    : "text-yellow-600"
                             } flex flex-row items-center gap-1 rounded-md bg-gray-900 border border-gray-700 font-semibold tracking-tight py-1 px-3 flex-grow self-start`}
                         >
                             <div
                                 className={`w-2 h-2 rounded-full ${
-                                    data ? "bg-green-400" : "bg-yellow-500"
+                                    !data.error
+                                        ? "bg-green-400"
+                                        : "bg-yellow-500"
                                 }`}
                             ></div>
-                            <span>{data ? "Online" : "Inactive"}</span>
+                            <span>{!data.error ? "Online" : "Inactive"}</span>
                         </div>
-                        {!data && (
+                        {data.error && (
                             <p className="text-sm">
                                 Render spins down free-tier APIs for inactivity
                                 which may delay initial data retrieval by a
@@ -350,6 +356,8 @@ export default function MainPage({
                                 !data
                                     ? "cursor-not-allowed bg-green-600 text-white text-white/60"
                                     : "hover:bg-green-600 hover:text-white/60"
+                            } ${
+                                loading && "cursor-not-allowed"
                             } py-2 px-7 text-foreground bg-green-500 rounded-xl tracking-wide font-semibold transition duration-150`}
                         >
                             GET
