@@ -1,7 +1,9 @@
 import { Suspense } from "react";
-import MainPage from "@/components/main-page";
 
 import { getData } from "./actions";
+
+import MainPage from "@/components/main-page";
+import LoadingSkeleton from "@/components/loading-skeleton";
 
 export default function Page() {
     return (
@@ -17,8 +19,4 @@ async function MainPageWrapper() {
     );
 
     return <MainPage initialData={initialData} />;
-}
-
-function LoadingSkeleton() {
-    return <div>Loading...</div>;
 }
