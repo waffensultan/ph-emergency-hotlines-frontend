@@ -1,32 +1,14 @@
-"use client";
-
-import { useState, useEffect } from "react";
-
 export default function LoadingSkeleton() {
-    const [timeElapsed, setTimeElapsed] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTimeElapsed((prev) => prev + 1);
-        }, 1000);
-
-        // Refresh page after 1 minute (60 seconds)
-        const timeout = setTimeout(() => {
-            window.location.reload();
-        }, 60000);
-
-        return () => {
-            clearInterval(interval);
-            clearTimeout(timeout);
-        };
-    }, []);
-
     return (
-        <div>
+        <div className="h-full flex flex-col justify-center text-center items-center ">
             <p>Loading...</p>
-            {timeElapsed > 30 && (
-                <p>Still loading... Try refreshing manually.</p>
-            )}
+
+            <hr className="w-[50%] bg-neutral-800 my-10" />
+            <p>
+                During windows of inactivity, the API temporarily suspends
+                itself which may delay initial data retrieval.
+            </p>
+            <p>If this lasts more than a minute, please refresh manually.</p>
         </div>
     );
 }
