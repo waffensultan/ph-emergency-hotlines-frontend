@@ -17,6 +17,10 @@ export default function MainPage({
 }: {
     initialData: Awaited<ReturnType<typeof getData>>;
 }) {
+    if (initialData.error) {
+        return <p>{initialData.error}</p>;
+    }
+
     const [selectedLocationData, setSelectedLocationData] = useState<
         Record<string, string | undefined>
     >({
